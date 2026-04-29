@@ -341,9 +341,132 @@ body {
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: #020617; }
 ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
+
+/* ══════════════════════════════════
+   TABLET  ≤ 1024px
+══════════════════════════════════ */
+@media (max-width: 1024px) {
+  .section { padding: 60px 32px 60px 80px; }
+
+  .about-grid { gap: 32px; max-width: 100%; }
+  .skills-wrap { max-width: 100%; }
+  .skill-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .exp-wrap { max-width: 100%; }
+  .contact-wrap { max-width: 100%; }
+}
+
+/* ══════════════════════════════════
+   MOBILE  ≤ 640px
+══════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Sidebar: ẩn đi, thay bằng bottom nav */
+  .sidenav { display: none; }
+
+  /* Bottom dot nav */
+  .bottom-nav {
+    display: flex !important;
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 200;
+    background: rgba(15,23,42,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 40px;
+    padding: 10px 20px;
+    gap: 20px;
+    align-items: center;
+  }
+  .bottom-nav a {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    text-decoration: none; cursor: pointer;
+  }
+  .bottom-nav .b-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #334155;
+    transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .bottom-nav .b-label {
+    font-size: 8px; color: #475569; letter-spacing: 1px;
+    text-transform: uppercase; font-weight: 600;
+  }
+  .bottom-nav a.active .b-dot {
+    background: #6366f1; transform: scale(1.5);
+    box-shadow: 0 0 8px rgba(99,102,241,0.7);
+  }
+  .bottom-nav a.active .b-label { color: #818cf8; }
+
+  /* Section layout */
+  .section { padding: 70px 20px 80px 20px; }
+
+  /* About: stack vertically */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* Stats: 2x2 compact */
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-card { padding: 12px; }
+  .stat-num { font-size: 24px; }
+
+  /* Skills: 1 col */
+  .skill-grid { grid-template-columns: 1fr; gap: 10px; }
+  .skill-card { padding: 16px; }
+
+  /* Contact: 1 col */
+  .contact-grid { grid-template-columns: 1fr; gap: 10px; }
+  .contact-card { padding: 14px 16px; }
+
+  /* Hero chips: smaller */
+  .hero-chips { gap: 6px; }
+  .chip { padding: 4px 10px; font-size: 10px; }
+
+  /* CTA buttons: stack on very small */
+  .hero-ctas { flex-direction: column; align-items: center; gap: 10px; }
+  .btn-primary, .btn-outline { width: 220px; text-align: center; justify-content: center; }
+
+  /* Avatar smaller */
+  .avatar-wrap { width: 88px; height: 88px; margin-bottom: 24px; }
+  .avatar-orb { width: 88px; height: 88px; font-size: 28px; }
+
+  /* Timeline */
+  .tl-card { padding: 16px; }
+  .tl-company { font-size: 17px; }
+
+  /* Scroll hint ẩn trên mobile để ko bị bottom nav che */
+  .scroll-hint { bottom: 70px; }
+}
+
+/* Tablet: ẩn bottom nav */
+@media (min-width: 641px) {
+  .bottom-nav { display: none !important; }
+}
 </style>
 </head>
 <body>
+
+<!-- ── BOTTOM NAV (mobile only) ── -->
+<nav class="bottom-nav" style="display:none">
+  <a href="#hero" class="active">
+    <div class="b-dot"></div>
+    <span class="b-label">Home</span>
+  </a>
+  <a href="#about">
+    <div class="b-dot"></div>
+    <span class="b-label">About</span>
+  </a>
+  <a href="#skills">
+    <div class="b-dot"></div>
+    <span class="b-label">Skills</span>
+  </a>
+  <a href="#experience">
+    <div class="b-dot"></div>
+    <span class="b-label">Exp</span>
+  </a>
+  <a href="#contact">
+    <div class="b-dot"></div>
+    <span class="b-label">Contact</span>
+  </a>
+</nav>
 
 <!-- ── LEFT SIDEBAR NAV ── -->
 <aside class="sidenav">
@@ -540,9 +663,9 @@ function countUp(el,target){let cur=0;const step=target/30;const t=setInterval((
 const countObs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.querySelectorAll('[data-count]').forEach(el=>countUp(el,parseInt(el.dataset.count)));});},{threshold:0.5});
 countObs.observe(document.getElementById('about'));
 
-// SIDEBAR NAV active state
+// NAV active state (sidebar + bottom nav)
 const sections = document.querySelectorAll('.section');
-const navItems = document.querySelectorAll('.sidenav-item');
+const navItems = document.querySelectorAll('.sidenav-item, .bottom-nav a');
 const sectionObs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
