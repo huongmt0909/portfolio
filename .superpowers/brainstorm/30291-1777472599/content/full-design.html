@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Preview — Hướng MT. Profile</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #020617; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+
+  .page-label {
+    position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+    background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.4);
+    color: #818cf8; padding: 6px 16px; border-radius: 20px; font-size: 12px;
+    z-index: 100; backdrop-filter: blur(8px);
+  }
+
+  .section-nav {
+    position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 8px; z-index: 100;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #334155; cursor: pointer; transition: all 0.3s; }
+  .dot.active { background: #6366f1; transform: scale(1.4); }
+
+  /* SECTION BASE */
+  .section {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 40px 24px; position: relative; overflow: hidden;
+    border-bottom: 1px solid #1e293b;
+  }
+  .section-tag {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: #6366f1; margin-bottom: 12px; font-weight: 600;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3);
+    color: #818cf8; padding: 4px 12px; border-radius: 20px;
+    font-size: 11px; margin-bottom: 20px;
+  }
+
+  /* ===== HERO ===== */
+  #hero { background: #0f172a; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(99,102,241,0.15) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(99,102,241,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-content { position: relative; z-index: 2; text-align: center; max-width: 700px; }
+  .avatar-orb {
+    width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 28px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+    position: relative; display: flex; align-items: center; justify-content: center;
+    font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -1px;
+    box-shadow: 0 0 40px rgba(99,102,241,0.5), 0 0 80px rgba(99,102,241,0.2);
+  }
+  .avatar-ring {
+    position: absolute; inset: -6px; border-radius: 50%;
+    border: 1px solid rgba(99,102,241,0.4);
+    animation: spin 8s linear infinite;
+  }
+  .avatar-ring::before {
+    content: ''; position: absolute; top: -3px; left: 50%;
+    width: 6px; height: 6px; background: #6366f1;
+    border-radius: 50%; transform: translateX(-50%);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero-name {
+    font-size: clamp(28px,5vw,52px); font-weight: 800; letter-spacing: -1px;
+    background: linear-gradient(135deg, #f8fafc 30%, #818cf8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .hero-role {
+    font-size: clamp(14px,2vw,18px); color: #818cf8; margin-bottom: 16px; font-weight: 500;
+  }
+  .hero-tagline {
+    font-size: clamp(13px,1.5vw,16px); color: #64748b; margin-bottom: 32px; line-height: 1.7;
+    max-width: 480px; margin-left: auto; margin-right: auto;
+  }
+  .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+  .btn-primary {
+    padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff; border: none; cursor: pointer;
+    box-shadow: 0 4px 24px rgba(99,102,241,0.4);
+  }
+  .btn-outline {
+    padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    background: transparent; color: #818cf8;
+    border: 1px solid rgba(99,102,241,0.4); cursor: pointer;
+  }
+  .hero-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .chip {
+    background: rgba(30,41,59,0.8); border: 1px solid #334155;
+    color: #94a3b8; padding: 4px 12px; border-radius: 6px; font-size: 11px;
+    backdrop-filter: blur(4px);
+  }
+  .scroll-hint {
+    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px; color: #475569; font-size: 11px;
+  }
+  .scroll-arrow { width: 1px; height: 40px; background: linear-gradient(to bottom, #475569, transparent); }
+
+  /* ===== ABOUT ===== */
+  #about { background: #0f172a; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 800px; width: 100%; align-items: center; }
+  .about-text h2 { font-size: clamp(24px,3vw,36px); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.5px; }
+  .about-text p { color: #94a3b8; line-height: 1.8; font-size: 14px; margin-bottom: 12px; }
+  .highlight { color: #818cf8; font-weight: 600; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+    padding: 16px; text-align: center;
+  }
+  .stat-num { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .stat-label { color: #64748b; font-size: 11px; margin-top: 4px; }
+  .about-deco {
+    background: #1e293b; border: 1px solid #334155; border-radius: 16px;
+    padding: 24px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .deco-row { display: flex; align-items: center; gap: 10px; }
+  .deco-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .deco-info { flex: 1; }
+  .deco-title { font-size: 12px; font-weight: 600; color: #f1f5f9; }
+  .deco-sub { font-size: 10px; color: #64748b; }
+  .deco-bar { height: 4px; border-radius: 2px; margin-top: 6px; background: #334155; overflow: hidden; }
+  .deco-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+
+  /* ===== SKILLS ===== */
+  #skills { background: #020617; }
+  .skills-inner { max-width: 800px; width: 100%; }
+  .skills-inner h2 { font-size: clamp(24px,3vw,36px); font-weight: 800; margin-bottom: 8px; text-align: center; }
+  .skills-inner .sub { color: #64748b; font-size: 13px; text-align: center; margin-bottom: 36px; }
+  .skill-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .skill-group {
+    background: #0f172a; border: 1px solid #1e293b; border-radius: 12px;
+    padding: 16px; transition: border-color 0.3s;
+  }
+  .skill-group:hover { border-color: rgba(99,102,241,0.4); }
+  .group-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6366f1; margin-bottom: 12px; font-weight: 600; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tag {
+    background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2);
+    color: #94a3b8; padding: 3px 10px; border-radius: 6px; font-size: 11px;
+  }
+  .skill-tag.main {
+    background: rgba(99,102,241,0.2); border-color: rgba(99,102,241,0.5);
+    color: #818cf8; font-weight: 600;
+  }
+
+  /* ===== EXPERIENCE ===== */
+  #experience { background: #0f172a; }
+  .exp-inner { max-width: 700px; width: 100%; }
+  .exp-inner h2 { font-size: clamp(24px,3vw,36px); font-weight: 800; margin-bottom: 8px; }
+  .exp-inner .sub { color: #64748b; font-size: 13px; margin-bottom: 40px; }
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, #6366f1, #8b5cf6 50%, transparent); }
+  .tl-item { position: relative; margin-bottom: 32px; }
+  .tl-dot {
+    position: absolute; left: -33px; top: 4px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #6366f1; border: 2px solid #0f172a;
+    box-shadow: 0 0 12px rgba(99,102,241,0.6);
+  }
+  .tl-card {
+    background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+    padding: 20px; transition: border-color 0.3s;
+  }
+  .tl-card:hover { border-color: rgba(99,102,241,0.4); }
+  .tl-period { font-size: 11px; color: #6366f1; font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; }
+  .tl-company { font-size: 18px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+  .tl-role { font-size: 13px; color: #818cf8; margin-bottom: 10px; }
+  .tl-desc { font-size: 13px; color: #64748b; line-height: 1.7; margin-bottom: 12px; }
+  .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tl-tag { background: rgba(30,41,59,0.8); border: 1px solid #334155; color: #94a3b8; padding: 2px 10px; border-radius: 4px; font-size: 10px; }
+  .tl-link { display: inline-flex; align-items: center; gap: 4px; color: #6366f1; font-size: 12px; text-decoration: none; margin-top: 8px; }
+
+  /* ===== CONTACT ===== */
+  #contact { background: #020617; }
+  .contact-inner { max-width: 600px; width: 100%; text-align: center; }
+  .contact-inner h2 { font-size: clamp(24px,3vw,36px); font-weight: 800; margin-bottom: 8px; }
+  .contact-inner .sub { color: #64748b; font-size: 14px; margin-bottom: 40px; line-height: 1.7; }
+  .contact-links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .contact-link {
+    display: flex; align-items: center; gap: 14px;
+    background: #0f172a; border: 1px solid #1e293b; border-radius: 12px;
+    padding: 16px 20px; text-decoration: none; color: #94a3b8;
+    transition: all 0.3s;
+  }
+  .contact-link:hover { border-color: rgba(99,102,241,0.5); color: #f1f5f9; }
+  .link-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(99,102,241,0.1); display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .link-info { text-align: left; }
+  .link-label { font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
+  .link-val { font-size: 13px; font-weight: 500; color: #818cf8; }
+  .contact-footer { margin-top: 40px; color: #334155; font-size: 12px; }
+
+  /* ANIMATION NOTE */
+  .anim-note {
+    position: absolute; bottom: 16px; right: 16px;
+    background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 8px; padding: 8px 12px; font-size: 10px; color: #6366f1; max-width: 200px; text-align: right;
+  }
+
+  @media (max-width: 640px) {
+    .about-grid, .skill-groups, .contact-links { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-label">Design Preview — Hướng MT. Profile · Scroll xuống để xem từng section</div>
+
+<nav class="section-nav">
+  <div class="dot active" title="Hero"></div>
+  <div class="dot" title="About"></div>
+  <div class="dot" title="Skills"></div>
+  <div class="dot" title="Experience"></div>
+  <div class="dot" title="Contact"></div>
+</nav>
+
+<!-- HERO -->
+<section class="section" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="avatar-orb">
+      HM
+      <div class="avatar-ring"></div>
+    </div>
+    <div class="badge">✦ Available for opportunities</div>
+    <h1 class="hero-name">Ma Trung Hướng</h1>
+    <p class="hero-role">Frontend Developer · React &amp; Flutter Specialist</p>
+    <p class="hero-tagline">Crafting beautiful UIs with React &amp; Flutter — turning ideas into elegant digital experiences.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary">Get in touch</button>
+      <button class="btn-outline">View GitHub ↗</button>
+    </div>
+    <div class="hero-chips">
+      <span class="chip">ReactJS</span>
+      <span class="chip">Flutter</span>
+      <span class="chip">TypeScript</span>
+      <span class="chip">Node.js</span>
+      <span class="chip">3+ years exp.</span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+  <div class="anim-note">✦ Animated: floating orb, particle bg, stagger text reveal</div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="section-tag">About Me</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <h2>Passionate about<br><span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">building great UX</span></h2>
+      <p>Tôi là <span class="highlight">Frontend Developer</span> với hơn 3 năm kinh nghiệm, chuyên về <span class="highlight">ReactJS</span> và <span class="highlight">Flutter</span>. Tôi đam mê tạo ra những giao diện đẹp, hiệu suất cao và dễ sử dụng.</p>
+      <p>Từng làm việc với nhiều tech stack từ web đến mobile, tôi luôn tìm cách áp dụng những giải pháp tối ưu nhất cho từng dự án.</p>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Tech Stacks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Platforms</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Curiosity</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-deco">
+      <div class="deco-row">
+        <div class="deco-icon" style="background:rgba(99,102,241,0.15);">⚛️</div>
+        <div class="deco-info">
+          <div class="deco-title">ReactJS</div>
+          <div class="deco-sub">Main expertise</div>
+          <div class="deco-bar"><div class="deco-fill" style="width:90%"></div></div>
+        </div>
+      </div>
+      <div class="deco-row">
+        <div class="deco-icon" style="background:rgba(99,102,241,0.15);">🐦</div>
+        <div class="deco-info">
+          <div class="deco-title">Flutter</div>
+          <div class="deco-sub">Mobile specialist</div>
+          <div class="deco-bar"><div class="deco-fill" style="width:85%"></div></div>
+        </div>
+      </div>
+      <div class="deco-row">
+        <div class="deco-icon" style="background:rgba(99,102,241,0.15);">🟢</div>
+        <div class="deco-info">
+          <div class="deco-title">Node.js</div>
+          <div class="deco-sub">Backend support</div>
+          <div class="deco-bar"><div class="deco-fill" style="width:65%"></div></div>
+        </div>
+      </div>
+      <div class="deco-row">
+        <div class="deco-icon" style="background:rgba(99,102,241,0.15);">📱</div>
+        <div class="deco-info">
+          <div class="deco-title">Mobile Dev</div>
+          <div class="deco-sub">iOS & Android</div>
+          <div class="deco-bar"><div class="deco-fill" style="width:75%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="anim-note">✦ Animated: slide in from sides, skill bars fill on enter</div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" id="skills">
+  <div class="skills-inner">
+    <div class="section-tag" style="text-align:center;">Tech Stack</div>
+    <h2>Skills &amp; Tools</h2>
+    <p class="sub">Những công nghệ tôi làm việc hàng ngày</p>
+    <div class="skill-groups">
+      <div class="skill-group">
+        <div class="group-title">Frontend</div>
+        <div class="skill-tags">
+          <span class="skill-tag main">ReactJS</span>
+          <span class="skill-tag main">Flutter</span>
+          <span class="skill-tag">Angular</span>
+          <span class="skill-tag">Vue.js</span>
+          <span class="skill-tag">TypeScript</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="group-title">Backend</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Ruby on Rails</span>
+          <span class="skill-tag">Django</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="group-title">Mobile</div>
+        <div class="skill-tags">
+          <span class="skill-tag main">Flutter</span>
+          <span class="skill-tag">Kotlin</span>
+          <span class="skill-tag">Swift</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="group-title">Database</div>
+        <div class="skill-tags">
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">MongoDB</span>
+          <span class="skill-tag">DBeaver</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="group-title">Tools &amp; IDE</div>
+        <div class="skill-tags">
+          <span class="skill-tag main">VS Code</span>
+          <span class="skill-tag">Cursor</span>
+          <span class="skill-tag">Android Studio</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="group-title">AI Tools</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Claude AI</span>
+          <span class="skill-tag">ChatGPT</span>
+          <span class="skill-tag">Cursor AI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="anim-note">✦ Animated: cards stagger in, hover glow effect</div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience">
+  <div class="exp-inner">
+    <div class="section-tag">Experience</div>
+    <h2>Work History</h2>
+    <p class="sub">Hành trình phát triển nghề nghiệp</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-period">06/2022 — Present · 3+ years</div>
+          <div class="tl-company">Bunbu Software</div>
+          <div class="tl-role">Frontend Developer</div>
+          <div class="tl-desc">
+            Phát triển và maintain các ứng dụng web và mobile sử dụng ReactJS và Flutter.
+            Tham gia toàn bộ vòng đời dự án từ thiết kế UI đến deployment.
+          </div>
+          <div class="tl-tags">
+            <span class="tl-tag">ReactJS</span>
+            <span class="tl-tag">Flutter</span>
+            <span class="tl-tag">Node.js</span>
+            <span class="tl-tag">MySQL</span>
+            <span class="tl-tag">MongoDB</span>
+          </div>
+          <a class="tl-link" href="https://www.bunbusoft.com/" target="_blank">bunbusoft.com ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="anim-note">✦ Animated: timeline draws itself, card slides in</div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 100%, rgba(99,102,241,0.12) 0%, transparent 70%);"></div>
+  <div class="contact-inner" style="position:relative;z-index:2;">
+    <div class="section-tag">Get In Touch</div>
+    <h2>Let's work<br><span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">together</span></h2>
+    <p class="sub">Tôi luôn sẵn sàng cho những cơ hội mới.<br>Hãy liên hệ nếu bạn có dự án thú vị!</p>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:huongmt.0909@gmail.com">
+        <div class="link-icon">✉️</div>
+        <div class="link-info">
+          <div class="link-label">Email</div>
+          <div class="link-val">huongmt.0909@gmail.com</div>
+        </div>
+      </a>
+      <a class="contact-link" href="https://github.com/huongmt0909" target="_blank">
+        <div class="link-icon">🐙</div>
+        <div class="link-info">
+          <div class="link-label">GitHub</div>
+          <div class="link-val">huongmt0909</div>
+        </div>
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/hướng-mt-9b04a8345" target="_blank">
+        <div class="link-icon">💼</div>
+        <div class="link-info">
+          <div class="link-label">LinkedIn</div>
+          <div class="link-val">Hướng MT.</div>
+        </div>
+      </a>
+      <a class="contact-link" href="https://facebook.com/huongmt-0909" target="_blank">
+        <div class="link-icon">📘</div>
+        <div class="link-info">
+          <div class="link-label">Facebook</div>
+          <div class="link-val">huongmt-0909</div>
+        </div>
+      </a>
+    </div>
+    <div class="contact-footer">Built with Next.js · Framer Motion · Tailwind CSS</div>
+  </div>
+  <div class="anim-note">✦ Animated: links stagger in, glow on hover</div>
+</section>
+
+<script>
+  const dots = document.querySelectorAll('.dot');
+  const sections = document.querySelectorAll('.section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(sections).indexOf(entry.target);
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[idx]) dots[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
