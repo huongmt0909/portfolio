@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+<img src="https://raw.githubusercontent.com/huongmt0909/huongmt0909/main/avatar.svg" width="160" height="160" alt="Hướng MT." />
 
-First, run the development server:
+<h1>Hướng MT. — Portfolio</h1>
+<h3>Personal profile website · Frontend Developer 🚀</h3>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<br/>
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&pause=1000&color=6366F1&center=true&vCenter=true&width=600&lines=Built+with+Next.js+%26+Framer+Motion+%E2%9C%A8;Dark+modern+design+%F0%9F%8C%99;Smooth+scroll+snap+animations+%F0%9F%9A%80;Fully+responsive+%F0%9F%93%B1)](https://git.io/typing-svg)
+
+<br/>
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-6366f1?style=for-the-badge&logo=vercel&logoColor=white)](https://portfolio-rho-one-stlaswaxzm.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/huongmt0909/portfolio)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/h%C6%B0%E1%BB%9Bng-mt-9b04a8345)
+
+</div>
+
+<img src="https://raw.githubusercontent.com/huongmt0909/huongmt0909/main/divider.svg" width="100%"/>
+
+## 👨‍💻 About
+
+```ts
+const portfolio = {
+  author:   "Hướng MT.",
+  role:     "Frontend Developer",
+  stack:    ["Next.js 16", "TypeScript", "Tailwind CSS v4", "Framer Motion"],
+  features: ["Full-screen snap scroll", "Dark Modern UI", "Animated sections", "Responsive"],
+  deploy:   "Vercel",
+  live:     "https://portfolio-rho-one-stlaswaxzm.vercel.app/",
+};
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<img src="https://raw.githubusercontent.com/huongmt0909/huongmt0909/main/divider.svg" width="100%"/>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<img src="https://raw.githubusercontent.com/huongmt0909/huongmt0909/main/tech-marquee.svg" width="100%" />
+<img src="https://raw.githubusercontent.com/huongmt0909/huongmt0909/main/tech-marquee2.svg" width="100%" />
 
-## Learn More
+### Built with
+<p>
+  <img src="https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" />
+</p>
 
-To learn more about Next.js, take a look at the following resources:
+<img src="https://raw.githubusercontent.com/huongmt0909/huongmt0909/main/divider.svg" width="100%"/>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📋 Sections
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Section | Mô tả |
+|---|---|
+| **Hero** | Particle canvas, avatar float, stagger animations |
+| **About** | Count-up stats, skill tag cards |
+| **Skills** | 6 nhóm tech cards với hover glow |
+| **Experience** | Timeline animated Bunbu Software |
+| **Contact** | 4 contact cards với hover effects |
 
-## Deploy on Vercel
+<img src="https://raw.githubusercontent.com/huongmt0909/huongmt0909/main/divider.svg" width="100%"/>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Getting Started
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# Clone repo
+git clone https://github.com/huongmt0909/portfolio.git
+cd portfolio
+
+# Install dependencies
+yarn install
+
+# Run dev server
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+```bash
+# Build production
+yarn build
+```
+
+<img src="https://raw.githubusercontent.com/huongmt0909/huongmt0909/main/divider.svg" width="100%"/>
+
+<div align="center">
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-6366f1?style=for-the-badge&logo=vercel&logoColor=white)](https://portfolio-rho-one-stlaswaxzm.vercel.app/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/h%C6%B0%E1%BB%9Bng-mt-9b04a8345)
+[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/huongmt-0909)
+[![Gmail](https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:huongmt.0909@gmail.com)
+
+<br/>
+
+![Profile views](https://komarev.com/ghpvc/?username=huongmt0909&color=6366f1&style=flat-square&label=Profile+Views)
+
+<br/><br/>
+
+*"Crafting beautiful UIs with React & Flutter"*
+
+</div>
