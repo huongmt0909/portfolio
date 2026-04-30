@@ -48,13 +48,13 @@ export default function HeroSection() {
           style={{ animation: 'float 6s ease-in-out infinite' }}
         >
           <div
-            className="w-full h-full rounded-full flex items-center justify-center text-[28px] md:text-[36px] font-black text-white relative z-10"
+            className="w-full h-full rounded-full flex items-center justify-center text-[22px] md:text-[28px] font-black text-white relative z-10 tracking-[-2px]"
             style={{
               background: 'linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899)',
               boxShadow: '0 0 40px rgba(99,102,241,0.6),0 0 80px rgba(99,102,241,0.3)',
             }}
           >
-            HM
+            HMT
           </div>
           <div
             className="absolute rounded-full border border-[rgba(99,102,241,0.5)]"
@@ -98,7 +98,7 @@ export default function HeroSection() {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          Ma Trung Hướng
+          Hướng MT.
         </motion.h1>
 
         {/* Role */}
